@@ -111,7 +111,9 @@ const handleCheck = async () => {
           const hologram = hologramMatch ? 'Yes' : 'No'; // "Yes" if the line starts with "Yes", otherwise "No"
 
           // Auto-generate serial number
-          const serialno = Math.floor(Math.random() * 1000000); // Generate a random serial number
+          // Auto-generate serial number
+//const serialno = Math.floor(Math.random() * 1000000); // Generate a random serial number
+const serialno = i + 1; // Use the index + 1 as the serial number
 
           // Create the JSON object for the current image
           jsonArray.push({
