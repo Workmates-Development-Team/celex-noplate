@@ -3,6 +3,7 @@ import { FaCloud, FaExclamationTriangle } from "react-icons/fa";
 import axios from "axios";
 import logo from "./logo.png";
 import ClipLoader from "react-spinners/ClipLoader"; // Importing ClipLoader from react-spinners
+import { geminiApi } from "../path/constant";
  
 const NumberPlateChecker = () => {
   const [selectedImages, setSelectedImages] = useState([]);
@@ -87,7 +88,7 @@ const handleCheck = async () => {
 
       try {
           // Make the POST request with Axios
-          const response = await axios.post('http://localhost:3003/api/generate', formData, {
+          const response = await axios.post(geminiApi, formData, {
               headers: {
                   'Content-Type': 'multipart/form-data', // Required for file uploads
               },

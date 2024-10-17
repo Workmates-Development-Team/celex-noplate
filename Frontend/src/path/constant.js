@@ -1,0 +1,1 @@
+export const geminiApi = 'http://localhost:3003/api/generate'
