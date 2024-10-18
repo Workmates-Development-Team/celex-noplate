@@ -128,7 +128,25 @@ const NumberPlateChecker = () => {
     // Export the sheet as an Excel file
     XLSX.writeFile(workbook, "approved_data.xlsx");
   };
+  const handleExportToJson = () => {
+   
+     const approvedData = tableData.filter((_, index) => approvals[index]);
 
+     // Create a blob of the JSON data
+     const jsonBlob = new Blob([JSON.stringify(approvedData, null, 2)], {
+       type: "application/json",
+     });
+ 
+     // Create a link element to trigger the download
+     const url = URL.createObjectURL(jsonBlob);
+     const a = document.createElement("a");
+     a.href = url;
+     a.download = "approved_data.json"; // Filename for the JSON file
+     document.body.appendChild(a);
+     a.click();
+     document.body.removeChild(a);
+     URL.revokeObjectURL(url); // Clean up the URL object
+  };
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-100 to-red-100">
       <nav className="bg-gradient-to-r from-blue-600 to-red-600 p-4 shadow-lg">
@@ -217,11 +235,23 @@ const NumberPlateChecker = () => {
                 isPrintEnabled
                   ? "bg-gradient-to-r from-blue-500 to-red-500 text-white"
                   : "bg-gray-300 text-gray-500 cursor-not-allowed"
-              } font-bold py-2 px-6 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 focus:outline-none`}
+              } font-bold py-2 px-6 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 focus:outline-none mr-3`}
             >
-              Print 
+             Download as excel
             </button>
+            <button onClick={handleExportToJson}
+              disabled={!isPrintEnabled} // Disable button if no approvals
+              className={`${
+                isPrintEnabled
+                  ? "bg-gradient-to-r from-blue-500 to-red-500 text-white"
+                  : "bg-gray-300 text-gray-500 cursor-not-allowed"
+              } font-bold py-2 px-6 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 focus:outline-none`}>
+             Downlaod as json
+            </button>
+            
           </div>
+
+          
 
           {/* Adding space between button and table */}
           <div className="mt-6"></div>
