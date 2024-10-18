@@ -58,7 +58,14 @@ app.post('/api/generate', upload.single('image'), async (req, res) => {
           role: 'user',
           parts: [
             image1,  // Send image1 as part of the message
-            { text: 'Tell me two alphanumeric Numbers. One is vehicle no and the other one is a small no.Check if there is any hologram?' },
+            { text: `Tell me two alphanumeric Numbers. One is vehicle no and the other one is a small no.Check if there is any hologram? 
+              
+              example output have to be -
+             
+"* **Vehicle Number:** WB02AP7811
+* **Small Number:** BA2500214448
+
+Yes, there is a hologram visible in the top left corner of the license plate."` },
           ],
         },
       ],
