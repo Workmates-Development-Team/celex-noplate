@@ -12,9 +12,10 @@ const vertex_ai = new VertexAI({
 });
  
 const model = 'gemini-1.5-flash-002';
+//const model = 'gemini-1.5-pro-002';
 const upload = multer({ dest: 'uploads/' });
 const app = express();
-const port = 3003;
+const port = 3030;
 app.use(cors());
 
  

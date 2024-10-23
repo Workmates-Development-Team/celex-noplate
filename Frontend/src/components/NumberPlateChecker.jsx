@@ -26,38 +26,128 @@ const NumberPlateChecker = () => {
     setSelectedImages(files);
   };
 
+  // const handleCheck = async () => {
+  //   if (selectedImages.length === 0) {
+  //     setError("Please select an image.");
+  //     return;
+  //   }
+
+  //   setLoading(true); // Set loading to true while processing
+  //   const jsonArray = []; // Initialize an empty array to store results
+
+  //   for (let i = 0; i < selectedImages.length; i++) {
+  //     const selectedImage = selectedImages[i]; // Get the current image
+  //     const formData = new FormData();
+  //     formData.append("image", selectedImage); // The key is 'image' as required by the API
+
+  //     try {
+  //       // Make the POST request with Axios
+  //       const response = await axios.post(geminiApi, formData, {
+  //         headers: {
+  //           "Content-Type": "multipart/form-data", // Required for file uploads
+  //         },
+  //       });
+
+  //       const textResponse =
+  //         response.data.aggregatedResponse.candidates[0].content.parts[0]
+  //           .text;
+  //       console.log("Response:", textResponse);
+
+  //       // Extract Vehicle Number
+  //       const vehicleNoMatch = textResponse.match(
+  //         /\*\*\s*Vehicle number:\*\*\s*([A-Z0-9\s]+)/i
+  //       );
+
+  //       // Extract Small Number and ensure it's 12 digits long, removing spaces and special characters
+  //       const smallNoMatch = textResponse.match(
+  //         /\*\*\s*Small number:\*\*\s*([A-Z0-9]+(?:\/[A-Z0-9]+)?)/i
+  //       );
+  //       let lid_no = smallNoMatch
+  //         ? smallNoMatch[1].replace(/[^\w]/g, "").substring(0, 12)
+  //         : null;
+
+  //       // Check for Hologram
+  //       const hologramMatch = textResponse.includes("Yes, there is a hologram");
+
+  //       // Extract the registration number and hologram presence
+  //       const registrationno = vehicleNoMatch
+  //         ? vehicleNoMatch[1].trim()
+  //         : null;
+  //       const hologram = hologramMatch ? "Yes" : "No";
+
+  //       // Auto-generate serial number
+  //       const serialno = tableData.length + i + 1; // Use current length + index + 1
+
+  //       // Create the JSON object for the current image
+  //       jsonArray.push({
+  //         serialno: serialno,
+  //         lid_no: lid_no,
+  //         registrationno: registrationno,
+  //         hologram: hologram,
+  //       });
+  //     } catch (error) {
+  //       console.error("Error uploading image:", error);
+  //       setError("Failed to upload image. Please try again.");
+  //     }
+  //   }
+
+  //   setLoading(false); // Set loading to false after processing all images
+
+  //   // Append new data to existing table data
+  //   setTableData((prevTableData) => [...prevTableData, ...jsonArray]); // Append new data to the previous table data
+  //   console.log("Updated JSON Array:", [...tableData, ...jsonArray]); // Log the updated array
+  // };
+
+
   const handleCheck = async () => {
     if (selectedImages.length === 0) {
       setError("Please select an image.");
       return;
     }
-
+  
     setLoading(true); // Set loading to true while processing
     const jsonArray = []; // Initialize an empty array to store results
-
+  
+    // Utility function to handle retries with exponential backoff
+    const retryWithBackoff = async (fn, retries = 5, delay = 10000, maxDelay = 16000) => {
+      try {
+        return await fn(); // Try the API call
+      } catch (error) {
+        if (retries === 0) {
+          throw error; // If no retries are left, throw the error
+        }
+        const newDelay = Math.min(maxDelay, delay * 2); // Exponential backoff with cap
+        console.log(`Retrying in ${delay}ms...`);
+        await new Promise((resolve) => setTimeout(resolve, delay)); // Wait for the delay
+        return retryWithBackoff(fn, retries - 1, newDelay, maxDelay); // Retry with increased delay
+      }
+    };
+  
     for (let i = 0; i < selectedImages.length; i++) {
       const selectedImage = selectedImages[i]; // Get the current image
       const formData = new FormData();
       formData.append("image", selectedImage); // The key is 'image' as required by the API
-
+  
       try {
-        // Make the POST request with Axios
-        const response = await axios.post(geminiApi, formData, {
-          headers: {
-            "Content-Type": "multipart/form-data", // Required for file uploads
-          },
-        });
-
+        // Wrap the API call with retry logic
+        const response = await retryWithBackoff(() =>
+          axios.post(geminiApi, formData, {
+            headers: {
+              "Content-Type": "multipart/form-data", // Required for file uploads
+            },
+          })
+        );
+  
         const textResponse =
           response.data.aggregatedResponse.candidates[0].content.parts[0]
             .text;
         console.log("Response:", textResponse);
-
+  
         // Extract Vehicle Number
         const vehicleNoMatch = textResponse.match(
           /\*\*\s*Vehicle number:\*\*\s*([A-Z0-9\s]+)/i
         );
-
+  
         // Extract Small Number and ensure it's 12 digits long, removing spaces and special characters
         const smallNoMatch = textResponse.match(
           /\*\*\s*Small number:\*\*\s*([A-Z0-9]+(?:\/[A-Z0-9]+)?)/i
@@ -65,19 +155,19 @@ const NumberPlateChecker = () => {
         let lid_no = smallNoMatch
           ? smallNoMatch[1].replace(/[^\w]/g, "").substring(0, 12)
           : null;
-
+  
         // Check for Hologram
         const hologramMatch = textResponse.includes("Yes, there is a hologram");
-
+  
         // Extract the registration number and hologram presence
         const registrationno = vehicleNoMatch
           ? vehicleNoMatch[1].trim()
           : null;
         const hologram = hologramMatch ? "Yes" : "No";
-
+  
         // Auto-generate serial number
         const serialno = tableData.length + i + 1; // Use current length + index + 1
-
+  
         // Create the JSON object for the current image
         jsonArray.push({
           serialno: serialno,
@@ -86,17 +176,18 @@ const NumberPlateChecker = () => {
           hologram: hologram,
         });
       } catch (error) {
-        console.error("Error uploading image:", error);
-        setError("Failed to upload image. Please try again.");
+        console.error("Error uploading image after retries:", error);
+        setError("Failed to upload image after retries. Please try again later.");
       }
     }
-
+  
     setLoading(false); // Set loading to false after processing all images
-
+  
     // Append new data to existing table data
     setTableData((prevTableData) => [...prevTableData, ...jsonArray]); // Append new data to the previous table data
     console.log("Updated JSON Array:", [...tableData, ...jsonArray]); // Log the updated array
   };
+  
 
   const handleApprovalChange = (index) => {
     // Toggle the approval state for the given index
