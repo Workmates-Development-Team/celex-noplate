@@ -149,6 +149,7 @@ const NumberPlateChecker = () => {
         );
   
         // Extract Small Number and ensure it's 12 digits long, removing spaces and special characters
+        
         const smallNoMatch = textResponse.match(
           /\*\*\s*Small number:\*\*\s*([A-Z0-9]+(?:\/[A-Z0-9]+)?)/i
         );
