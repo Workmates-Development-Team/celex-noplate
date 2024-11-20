@@ -149,7 +149,7 @@ const NumberPlateChecker = () => {
         );
   
         // Extract Small Number and ensure it's 12 digits long, removing spaces and special characters
-        
+
         const smallNoMatch = textResponse.match(
           /\*\*\s*Small number:\*\*\s*([A-Z0-9]+(?:\/[A-Z0-9]+)?)/i
         );
@@ -244,7 +244,7 @@ const NumberPlateChecker = () => {
       <nav className="bg-gradient-to-r from-blue-600 to-red-600 p-4 shadow-lg">
         <div className="container mx-auto flex items-center justify-between">
           <img src={logo} alt="Logo" className="h-16 w-auto" />
-          <h1 className="text-2xl font-bold text-white">Number Plate Checker</h1>
+          <h1 className="text-2xl font-bold text-white">Single Number Plate</h1>
         </div>
       </nav>
 

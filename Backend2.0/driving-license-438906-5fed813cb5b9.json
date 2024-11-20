@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "driving-license-438906",
+  "private_key_id": "5fed813cb5b99c9db917c74f0647267f08da1ead",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvwIBADANBgkqhkiG9w0BAQEFAASCBKkwggSlAgEAAoIBAQCi5Gaozs1jFQMa\ndprW509gakSH02s9WQML8eKBNzzUQgv4ZwuOXOPow39cZicnDcPKBbfoQ7IFfUgl\nGC8flFcz4+PBsqVjJAHnvNd6lm5XerqGN2X+IaQQUYNjqoAh41DrZ6C/KhElxJ13\n4YwO2m2SNvDWXlKx6zV8D2HsdP3fzi7hTj7lLI28+tjaL76IKjMMDEJnoaI3NYAL\npIOr02OIdGMVbPEST8DdcNKfVVI2TIHOcEYcumMzs3XnkvClWJdhw62F2bKqvMtX\ncg7VaIT5LCsAJbDw99LQfj8n+QK+CzazddO+/C+5V4kcHBKJSZLd/W0zzUoAAuF3\njsIXWUA/AgMBAAECggEAMm88d+zb+98gIFvzsjFZStVsVY+4xvxd7J9ejbqQG3o9\noZIqKlCJgmKxdubsHXPuGIlvuTrojjmNkmqsAH+aBmd7d9g7y/f0nQ9DumGEVZKa\n2P6jFi3NUf4jC8NZO+TZg6GIzFeWipaXWOxdRKYNwfU/2WfH++2DGF/c5m0Mw/Pg\nzvI7AzgAIsbbUtNAivMphsVlaX054wnQNMRvt3MZXLSeaO/PrDwveVydTDVd7wiN\n7JI4E9+nrYGXzJ0SyGBvmI85JGdTATNNb7DQYezwXBDUkbax/3DFYEkjeht3MvV9\nZM8pzy1Oip20HCGLt4y6HGfX0/W0lsoInuCdR6mqfQKBgQDVJRZkPpOL92x5A05I\n4TBDY1IubiXwBO9XovjFA1x/3jxsuI7m6mWlBirkvmXy7W7HFPKI3Jr6OGwgsUlU\nmd6pKIHLQN6BZIJ9xLEBgYbZAz07m2NQRhRabndPHfFVzTr2ZyACPtLpDq9LQK/M\nHkcF2AzVmX6YdF/1mXYPY47vswKBgQDDpLn6L3ansgbIBv3HM0cQq4W2Zvhu56wj\nHYpDA+VQdMiEMuQGTrK/H9vgR9yQ6u7WXwgi30WpWNLh2P/OenhcNgeobeOwlu98\n2i1Xc14IEic4YjOA8bSsTcjLK/lw0ctbo81UUbapgjNU3V0md2srA2EbKojSWo7j\nWlFxgUhHRQKBgQCFA98kchTcPW2ZW6HIQ5g+BcasqRrN3haLp23+bSmVttgYtVig\n7NjAEshD9jpjTx9Z6E2vcZTZ4MpB4MG1pUzaXigZ8wKo11PELzKTkQTZe3cEMuXY\nm9Np2BRm8HXCqRBJ43OLUy+GOB7XJKhRBvglwn3H80GY3M9h0wJleikilwKBgQCz\n9YLogd44FMauGdg38o/s4olFJeRhR5MMXfC/AgdeAX4sNA+RSbSbn3eGDzPwzVlS\nMOnwAcY3JrAb9Jog2IB7+WsD38jvt3alNp88cK9O5zvSXmoXsr1JPOd1E4cH4sKX\nEc4eQGev9ka3SkOTzYbzctFQxshCDfCfaoW9zXiprQKBgQCZajaGONmPWuDZnBvo\neItTID1oltJhaMw/Y1IvWULA6f2DASNXan/0VDjyxyVvhO0uK0melVyefd0xdjoz\nnmW+1DGBA3ykYIf4uOiXxHGiZkGd89rxbLL2/9xgQ96lmE7698wCd0rEba22KWem\n3UPH0bjBnbCMBU1Ied6XQq0lUg==\n-----END PRIVATE KEY-----\n",
+  "client_email": "ritos-426@driving-license-438906.iam.gserviceaccount.com",
+  "client_id": "101354197349814457070",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/ritos-426%40driving-license-438906.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
