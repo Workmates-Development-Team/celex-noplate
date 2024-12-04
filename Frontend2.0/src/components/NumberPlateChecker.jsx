@@ -3,7 +3,7 @@ import { FaCloud, FaExclamationTriangle } from "react-icons/fa";
 import axios from "axios";
 import logo from "./logo.png";
 import ClipLoader from "react-spinners/ClipLoader"; // Importing ClipLoader from react-spinners
-import { geminiApi } from "../path/constant";
+import { DevApi } from "../path/constant";
 import * as XLSX from "xlsx"; // Importing XLSX library
 
 const NumberPlateChecker = () => {
@@ -135,7 +135,7 @@ const NumberPlateChecker = () => {
       try {
         // Wrap the API call with retry logic
         const response = await retryWithBackoff(() =>
-          axios.post(geminiApi, formData, {
+          axios.post(DevApi, formData, {
             headers: {
               "Content-Type": "multipart/form-data", // Required for file uploads
             },

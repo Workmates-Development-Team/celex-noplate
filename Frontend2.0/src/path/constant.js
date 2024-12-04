@@ -1,1 +1,1 @@
-export const geminiApi = 'http://localhost:3031/api/generate'
+export const DevApi = 'http://localhost:3031/api/generate'

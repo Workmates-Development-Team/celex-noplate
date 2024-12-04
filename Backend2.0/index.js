@@ -36,7 +36,7 @@ app.use(cors());
 app.post('/api/generate', upload.single('image'), async (req, res) => {
   try {
     const imagePath = req.file.path;
-    console.log(imagePath)
+    console.log(imagePath);
     const compressedImagePath = path.join('uploads', `compressed-${req.file.filename}`);
     const imageMimeType = req.file.mimetype;
 
@@ -44,22 +44,31 @@ app.post('/api/generate', upload.single('image'), async (req, res) => {
     const originalFile = await fs.stat(imagePath);
     console.log("Original file size:", originalFile.size, "bytes");
 
-    // Reduce resolution with FFmpeg
-    await new Promise((resolve, reject) => {
-      ffmpeg(imagePath)
-        .output(compressedImagePath)
-        .size('50%') // Adjust to reduce resolution; 50% is a placeholder for quartering size
-        .on('end', resolve)
-        .on('error', reject)
-        .run();
-    });
+    let imageToUsePath = imagePath;
 
-    // Log compressed file size
-    const compressedFile = await fs.stat(compressedImagePath);
-    console.log("Compressed file size:", compressedFile.size, "bytes");
+    // Reduce resolution only if file size is greater than 85,000 bytes
+    if (originalFile.size > 200000) {
+      console.log("File size exceeds 85,00 bytes; compressing...");
+      await new Promise((resolve, reject) => {
+        ffmpeg(imagePath)
+          .output(compressedImagePath)
+          .size('50%') // Adjust to reduce resolution; 50% is a placeholder for quartering size
+          .on('end', resolve)
+          .on('error', reject)
+          .run();
+      });
 
-    // Read compressed image and convert to base64
-    const imageBuffer = await fs.readFile(compressedImagePath);
+      // Log compressed file size
+      const compressedFile = await fs.stat(compressedImagePath);
+      console.log("Compressed file size:", compressedFile.size, "bytes");
+
+      imageToUsePath = compressedImagePath;
+    } else {
+      console.log("File size is within acceptable range; using original image.");
+    }
+
+    // Read the selected image and convert to base64
+    const imageBuffer = await fs.readFile(imageToUsePath);
     const imageBase64 = imageBuffer.toString('base64');
     console.log("Base64 image size:", imageBase64.length, "bytes");
 
@@ -100,7 +109,7 @@ app.post('/api/generate', upload.single('image'), async (req, res) => {
               * **Small Number:** [BA2500214448, BA2500214448]
               Don't add any space inside the array in between the numbers, remove the spaces if it comes inside the number.
               Yes, there is a hologram visible in the top left corner of the license plate.
-              Yes, both vehicle numbers are same."`
+              Yes, both vehicle numbers are same."`,
             },
           ],
         },
@@ -120,14 +129,13 @@ app.post('/api/generate', upload.single('image'), async (req, res) => {
     });
 
     // Clean up images
-
     await fs.unlink(imagePath);
-    await fs.unlink(compressedImagePath);
+    if (imagePath !== imageToUsePath) {
+      await fs.unlink(compressedImagePath);
+    }
   } catch (error) {
-    
     console.error('Error generating content:', error);
     res.status(500).send('An error occurred while generating content.');
-    
   }
 });
 
